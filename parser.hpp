@@ -67,8 +67,9 @@ public:
   ///   additive-expression -> additive-expression '+' multiplicative-expression
   ///   additive-expression -> additive-expression '-' multiplicative-expression
   ///   additive-expression -> multiplicative-expression
-  
+  Expr* parse_additive_expression_rest(Expr*);
   Expr* parse_multiplicative_expression();
+  Expr* parse_multiplicative_expression_rest(Expr*);
   /// Parse a multiplicative-expression.
   ///
   ///   multiplicative-expression -> multiplicative-expression '*' postfix-expression
@@ -84,6 +85,7 @@ public:
   ///   prefix-expression -> postfix-expression
 
   Expr* parse_postfix_expression();
+  Expr* parse_postfix_expression_rest(Expr*);
   /// Parse a postfix expression
   ///
   ///   postfix-expression -> primary-expression '(' argument-list ')'
@@ -120,7 +122,7 @@ public:
   Decl* parse_local_declaration();
   Decl* parse_function_definition();
   Decl* parse_object_definition();
-
+  std::vector<Decl*> parse_parameter_declarations();
 private:
   Lexer m_lex;
   // The lexer.
