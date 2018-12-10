@@ -10,10 +10,15 @@ Builder::require_bool(Expr* e)
 
   // If the type is not bool, emit an error.
   Type* t = c->get_type();
-  if (!t->is_bool())
-    // FIXME: Improve diagnostics.
+  if (!t->is_bool()) {
+    if(t->is_reference()) 
+      throw std::runtime_error("operand not boolean, found reference.");
+    if(t->is_object())
+      throw std::runtime_error("Found object expected arithmetic");
+    if(t->is_arithmetic()) 
+      throw std::runtime_error("Found arithmetic expected boolean");
     throw std::runtime_error("operand not boolean");
-
+  }
   return c;
 }
 
@@ -26,7 +31,13 @@ Builder::require_arithmetic(Expr* e)
   // If the type is not arithmetic, emit an error.
   Type* t = c->get_type();
   if (!t->is_arithmetic())
-    // FIXME: Improve diagnostics.
+    if(t->is_bool()) 
+      throw std::runtime_error("Found bool expected arithmetic");
+    if(t->is_reference())
+      throw std::runtime_error("Found reference expected arithmetic");
+    if(t->is_object()) 
+      throw std::runtime_error("Found object expected arithmetic");
+
     throw std::runtime_error("operand not arithmetic");
 
   return c;
@@ -36,12 +47,20 @@ Expr*
 Builder::require_function(Expr* e)
 {
   Expr* c = convert_to_value(e);
-
   Type* t = c->get_type();
+  if(!t->is_function()) { 
+    if(t->is_bool()) 
+      throw std::runtime_error("not  a function. Found bool.");
+    if(t->is_reference())
+      throw std::runtime_error("Found reference instead of function");
+    if(t->is_object())
+      throw std::runtime_error("Found object instead of function");
+    if(t->is_arithmetic())
+      throw std::runtime_error("Found arithmetic instead of function");
+  }
+
   if (t->is_function())
     return c;
-
-  throw std::runtime_error("not a function");
 }
 
 Expr*
