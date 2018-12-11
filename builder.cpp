@@ -5,7 +5,6 @@
 #include "stmt.hpp"
 #include "decl.hpp"
 
-// FIXME: Make names unique.
 Name*
 Builder::get_name(char const* str)
 {
