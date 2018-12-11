@@ -13,8 +13,6 @@ class Var_decl;
 class Fn_decl;
 
 
-/// The Builder class is responsible for performing semantic analysis
-/// and 
 class Builder
 {
 public:
