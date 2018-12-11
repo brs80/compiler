@@ -90,9 +90,9 @@ Parser::parse_postfix_expression()
   parse_primary_expression();
   while (true) {
     if (match(Token::lparen)) {
-      // parse_argument_list();
+      parse_argument_list();
       expect(Token::rparen);
-      // return nullptr;
+      /return nullptr;
     }
     else {
       break;
